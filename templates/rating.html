@@ -1,0 +1,24 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- Rating form, handles adding/editing ratings -->
+<div class="row justify-content-md-center">
+  <div class="col-md-7 col-lg-5">
+    <h2 class="join-message">Add/edit rating:</h2>
+
+    <!-- Shows your current rating with no decimals if exists-->
+    {%if rating.score%}
+    <label>Your current rating: {{"{:.0f}".format(rating.score)}}/10</label>
+    {%endif%}
+
+    <form method="POST" id="comment_form">
+      {{ form.hidden_tag() }} {% for field in form if field.widget.input_type !=
+      'hidden' %} {% for error in field.errors %}
+      <span class="text-danger">{{ error }}</span>
+      {% endfor %} {{ field(placeholder=field.label.text, class="form-control")
+      }} {% endfor %}
+      <button class="btn btn-primary btn-lg btn-block">Rate!</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

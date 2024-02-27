@@ -1,0 +1,67 @@
+{% extends 'base.html' %} {% block content %}
+
+<!-- Welcome info if not logged in-->
+{% if not g.user %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="jumbotron text-center">
+        <h1 class="display-6">Welcome to the Studio Ghibli Fansite</h1>
+        <p class="lead">
+          Rate and comment on movies!
+        </p>
+        <hr class="my-4" />
+        <p>Sign up to get started or log in if you already have an account.</p>
+        <a class="btn btn-primary btn-lg" href="/users/register" role="button"
+          >Sign Up</a
+        >
+        <a class="btn btn-secondary btn-lg" href="/login" role="button"
+          >Log In</a
+        >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%endif%}
+
+
+<!-- Displays top rated movies and photos -->
+<div class="container">
+  <h1>Top rated movies</h1>
+  <div class="row">
+    {% for movie in all %}
+    <div id='movie_card'class="col-md-2 mb-1">
+      <div class="card">
+        <img
+          src="{{ movie.img }}"
+          class="card-img-top"
+          alt="{{ movie.name }}"
+        />
+        <div class="card-body">
+          <h5 id='movie_name' class="card-title">{{ movie.name }}</h5>
+          <p class="card-text">Rating: {{ movie.rating }}/10</p>
+          <a href="/pages/{{ movie.id }}" class="btn btn-primary">More Info</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Displays most recent comments -->
+<h1>Most recent comments</h1>
+{%for comment in comments%}
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">{{ comment.page[0].name}}</h5>
+    <hr>
+    <p class="card-text">{{ comment.comment }}</p>
+    <p class="card-text"><a href='/users/{{comment.comment_author[0].id}}'>{{ comment.comment_author[0].username }}</a></p>
+    <p class="card-text small">{{comment.formatted_timestamp()}}</p>
+  </div>
+</div>
+{%endfor%}
+
+
+{% endblock %}

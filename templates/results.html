@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% block content %}
+
+<!--Diasplays search results -->
+<div class="container">
+  <h1>Results for '{{query}}'</h1>
+  <div class="row">
+    {% for page in pages %}
+    <div id="movie_card" class="col-md-2 mb-1">
+      <div class="card">
+        <img src="{{ page.img }}" class="card-img-top" alt="{{ page.name }}" />
+        <div class="card-body">
+          <h5 class="card-title">{{ page.name }}</h5>
+
+          {% if page.rating %}
+          <p class="card-text">Rating: {{ page.rating }}/10</p>
+          {% endif %}
+
+          <a href="/pages/{{ page.id }}" class="btn btn-primary">More Info</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

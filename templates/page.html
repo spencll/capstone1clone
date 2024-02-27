@@ -1,0 +1,63 @@
+{% extends 'base.html' %} {% block content %}
+<!-- Banner -->
+<div
+  id="warbler-hero"
+  class="full-width"
+  style="background-image: url('{{img}}'); background-size: contain; background-repeat: no-repeat; background-position: center;"
+></div>
+
+<!--Movie info-->
+<div class="container w-50">
+  <h1>{{page.name}}</h1>
+  <ul class="list-group">
+    <li class="list-group-item"><b>Release year:</b> {{page.release_yr}}</li>
+    <li class="list-group-item"><b>Runtime:</b> {{page.running_time}}min</li>
+    <li class="list-group-item"><b>Synopsis:</b> {{res['description']}}</li>
+
+    <!-- Shows rating or not yet rated if no rating-->
+    {%if page.rating %}
+    <li class="list-group-item d-flex justify-content-between align-items-center"><div><b>Rating:</b> {{page.rating}}/10</div> 
+      <a href="/pages/{{page.id}}/rate" class="btn btn-primary">Rate!</a>
+    </li>
+    {%else%}
+    <li class="list-group-item d-flex justify-content-between align-items-center"><div><b>Rating:</b> Not yet rated</div> 
+      <a href="/pages/{{page.id}}/rate" class="btn btn-primary">Rate!</a>
+    </li>
+  {%endif%}
+  </ul>
+</div>
+
+<!-- Gets trailer  -->
+<div class="container-large mt-6">
+  <div class="d-flex justify-content-center">
+    <div class="embed-responsive embed-responsive-16by9">
+      <iframe class="embed-responsive-item" src="{{video_url}}" allowfullscreen style="width: 500px; height: 400px;"></iframe>
+    </div>
+  </div>
+</div>
+
+  <hr/>
+
+  <!-- Displaying comments  -->
+  <h1>Comments</h1>
+  {%for comment in comments%}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title"><a href='/users/{{comment.comment_author[0].id}}'>{{ comment.comment_author[0].username }}</a></h5>
+      <p class="card-text">{{ comment.comment }}</p>
+      <p class="card-text small">{{comment.formatted_timestamp()}}</p>
+      {%if comment.comment_author[0] == g.user %}
+      <a
+        href="/comments/{{comment.id}}/delete"
+        class="btn btn-danger btn-sm align-self-end"
+        >Delete</a
+      >
+      {% endif%}
+    </div>
+  </div>
+  {% endfor %}
+   <a href="/pages/{{page.id}}/comment" class="btn btn-primary"
+  >Leave a comment</a>
+
+ 
+  {% endblock %}

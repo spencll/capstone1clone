@@ -1,0 +1,120 @@
+{% extends 'base.html' %} {% block content %}
+<!-- Banner -->
+<div id="warbler-hero" class="full-width" style="background-image: url('/static/images/Ghibli.jpg'); background-size: contain; background-repeat: repeat; background-position: center;"></div>
+
+
+<!-- Bar with profile stats -->
+<img
+  src="{{ user.image_url }}"
+  alt="Image for {{ user.username }}"
+  id="profile-avatar"
+/>
+<div class="row full-width">
+  <div class="container">
+    <div class="row justify-content-end">
+      <div class="col-9">
+        <ul class="user-stats nav nav-pills">
+          <li class="stat">
+            <p class="small">Comments</p>
+            <h4>
+              {{comments | length}}
+            </h4>
+          </li>
+          <li class="stat">
+            <p class="small">Number of ratings</p>
+            <h4>
+             {{ratings | length }}
+            </h4>
+          </li>
+
+          <!-- Edit/delete user for logged in user -->
+          <div class="ml-auto">
+            {% if g.user.id == user.id %}
+            <a href="/users/edit" class="btn btn-outline-secondary"
+              >Edit Profile</a>
+            <form method="POST" action="/users/{{g.user.id}}/delete" class="form-inline">
+              <button class="btn btn-outline-danger ml-2">
+                Delete Profile
+              </button>
+            {% endif %} 
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Left column user info  -->
+<div class="row">
+  <div class="col-sm-3">
+    <h1 id="sidebar-username">{{ user.username }}</h1>
+    <hr>
+    <p>{{user.bio}}</p>
+  </div>
+
+  <!-- Top rated movies and images-->
+  <div class="row">
+    <h5 class="card-title">{{ user.username }}'s top rated movies:</h5>
+    {% if not comments%}
+    <h6>No ratings yet</h6>
+    {%else%}
+
+    {% for rating in top_ratings%}
+    <div class="col-md-2 mb-1">
+      <div class="card">
+        <a href="/pages/{{ rating.page[0].id}}" > 
+          <img
+          src="{{rating.img}}"
+          class="card-img-top"
+        /></a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {%endif%}
+
+  <!-- Recent comments -->
+  <div class="container">
+    <h5 class="card-title">{{ user.username }}'s latest comments:</h5>
+    {% if not comments%}
+    <h6>No comments yet</h6>
+    {%else%}
+    <div class="row">
+      <div class="col">
+        <div class="card mb-3">
+          <div class="card-body">
+            {% for comment in comments %}
+            <div class="comment">
+              <h6 class="card-subtitle mb-2 ">{{ comment.page[0].name }}</h6>
+              <p class="card-text text-muted">{{ comment.comment }}</p>
+              <p class="card-text small">{{comment.formatted_timestamp()}}</p>
+              <div> {%if comment.comment_author[0] == g.user %}
+                <a
+                  href="/comments/{{comment.id}}/delete"
+                  class="btn btn-danger btn-sm align-self-end"
+                  >Delete</a
+                >
+                {% endif%}</div>
+              <hr>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        
+      </div>
+    </div>
+    {%endif%}
+
+  </div>
+  
+    
+  
+
+
+
+
+
+
+</div>
+
+{% endblock %}

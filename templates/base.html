@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ghibli</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap/dist/css/bootstrap.css"
+    />
+    <script src="https://unpkg.com/jquery"></script>
+    <script src="https://unpkg.com/bootstrap"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    />
+    <link rel="stylesheet" href="/static/stylesheets/style.css" />
+    <link rel="shortcut icon" href="/static/favicon.ico" />
+  </head>
+
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">
+            <span>Ghibli</span>
+          </a>
+        </div>
+
+        <!-- Search bar -->
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <form class="navbar-form navbar-right" action="/search">
+
+              <div class="input-group">
+              <input name="q" class="form-control" placeholder="Search movie" id="search">
+
+              <!-- Auto drop down  -->
+              <div class="suggestions">
+                <ul>
+                </ul>
+              </div>
+
+            </div>
+
+            <button class="btn btn-default">
+              <span class="fa fa-search"></span>
+            </button>
+            </form>
+          </li>
+
+          <!-- Right side of navbar depend on login -->
+          {% if not g.user %}
+          <li><a href="/users/register">Sign up</a></li>
+          <li><a href="/login">Log in</a></li>
+          {% else %}
+          <li>
+            <a href="/users/{{ g.user.id }}">
+              <img src="{{ g.user.image_url }}" alt="{{ g.user.username }}">
+            </a>
+          </li>
+          <li><a href="/users/{{ g.user.id }}"><strong>{{ g.user.username }}</strong></a></li>
+          <li><a href="/logout">Log out</a></li>
+          {% endif %}
+        </div>
+    </nav>
+    
+    <!-- Below navbar for flashes-->
+    <div class="container">
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+      <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+
+      <!-- Extended -->
+      {% block content %}
+      {% endblock %}
+    
+    </div>
+    </div>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    </body>
+
+</html>
