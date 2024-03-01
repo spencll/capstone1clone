@@ -36,6 +36,7 @@
               <button class="btn btn-outline-danger ml-2">
                 Delete Profile
               </button>
+              </form>
             {% endif %} 
           </div>
         </ul>
@@ -55,7 +56,7 @@
   <!-- Top rated movies and images-->
   <div class="row">
     <h5 class="card-title">{{ user.username }}'s top rated movies:</h5>
-    {% if not comments%}
+    {% if not ratings%}
     <h6>No ratings yet</h6>
     {%else%}
 
@@ -73,6 +74,8 @@
   </div>
   {%endif%}
 
+
+
   <!-- Recent comments -->
   <div class="container">
     <h5 class="card-title">{{ user.username }}'s latest comments:</h5>
@@ -89,11 +92,11 @@
               <p class="card-text text-muted">{{ comment.comment }}</p>
               <p class="card-text small">{{comment.formatted_timestamp()}}</p>
               <div> {%if comment.comment_author[0] == g.user %}
-                <a
-                  href="/comments/{{comment.id}}/delete"
-                  class="btn btn-danger btn-sm align-self-end"
-                  >Delete</a
-                >
+                <form method="POST" action="/comments/{{comment.id}}/delete" class="form-inline">
+                  <button class="btn btn-outline-danger ml-2">
+                    Delete Comment
+                  </button>
+                </form>
                 {% endif%}</div>
               <hr>
             </div>

@@ -81,6 +81,8 @@ def rating_avg(page):
 
     ratings = page.ratings.all()
     rating_lst= [rate.score for rate in ratings]
+    if len(rating_lst)==0:
+        return None
     avg = round(sum(rating_lst)/len(rating_lst),2)
     return avg
 
@@ -228,7 +230,7 @@ def register():
             # Other errors
                 flash("An error occurred, please try again.", 'danger')
 
-            return render_template('users/signup.html', form=form)
+            return render_template('register.html', form=form)
         
 
         # Setting session key value to demonstrate logged in user
@@ -318,7 +320,7 @@ def add_comment(pid):
     
 @app.route('/comments/<cid>/delete', methods = ['POST'])
 def delete_comment(cid):
-    """Delete comment"""
+    """Delete comment and associations"""
     comment = Comment.query.get_or_404(cid)
     db.session.delete(comment)
     db.session.commit()
@@ -328,11 +330,28 @@ def delete_comment(cid):
 
 @app.route('/users/<uid>/delete', methods= ['POST'])
 def delete_user(uid):
-    """Logs out user and then deletes user"""
+    """Logs out user and then deletes user. Takes care of rating/comments too"""
     do_logout()
     user = User.query.get_or_404(uid)
+
+    # Comment deletion
+    for comment in user.user_comments.all():
+        db.session.delete(comment)
+
+    # Rating deletion and changing average 
+    for rating in user.user_ratings.all():
+        page = rating.page[0]
+        db.session.delete(rating)
+        db.session.commit()
+        page.rating = rating_avg(page) or None
+        db.session.commit()
+
+    # user deletion
     db.session.delete(user)
     db.session.commit()
+
+    # Changing rating afterwards
+
     return redirect("/")
 
 @app.route('/pages/<pid>/rate', methods=['GET','POST'])

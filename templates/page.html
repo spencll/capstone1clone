@@ -47,11 +47,11 @@
       <p class="card-text">{{ comment.comment }}</p>
       <p class="card-text small">{{comment.formatted_timestamp()}}</p>
       {%if comment.comment_author[0] == g.user %}
-      <a
-        href="/comments/{{comment.id}}/delete"
-        class="btn btn-danger btn-sm align-self-end"
-        >Delete</a
-      >
+      <form method="POST" action="/comments/{{comment.id}}/delete" class="form-inline">
+        <button class="btn btn-outline-danger ml-2">
+          Delete Comment
+        </button>
+        </form>
       {% endif%}
     </div>
   </div>

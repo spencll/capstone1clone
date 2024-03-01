@@ -57,8 +57,11 @@
     <h5 class="card-title">{{ comment.page[0].name}}</h5>
     <hr>
     <p class="card-text">{{ comment.comment }}</p>
-    <p class="card-text"><a href='/users/{{comment.comment_author[0].id}}'>{{ comment.comment_author[0].username }}</a></p>
-    <p class="card-text small">{{comment.formatted_timestamp()}}</p>
+    
+   <p class="card-text"><a href='/users/{{comment.comment_author[0].id}}'>{{ comment.comment_author[0].username }}</a></p>
+
+
+    <p class="card-text small">{{comment.formatted_timestamp()}}</p> 
   </div>
 </div>
 {%endfor%}
