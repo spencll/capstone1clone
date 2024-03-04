@@ -251,9 +251,6 @@ class UserModelTestCase(TestCase):
     def test_rating(self):
         with app.app_context():
 
-            # For some reason, the stuff I stored in self not working
-            # Gotta query again...
-
             page = Page.query.get(self.pid1)
             page.rating = rating_avg(page)
 

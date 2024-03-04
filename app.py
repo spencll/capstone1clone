@@ -10,6 +10,7 @@ from googleapiclient.discovery import build
 
 from forms import LoginForm, RegisterForm, CommentForm, RatingForm, EditUserForm
 from models import db, connect_db, Comment, Rating, User, Page
+from config import API_KEY, CLIENT_ID, CLIENT_SECRET
 
 
 # session key to store logged in user
@@ -20,8 +21,8 @@ app = Flask(__name__)
 oauth=OAuth(app)
 google = oauth.register(
     name='google',
-    client_id='749818778496-8jmtc3kvr8rci8vv2vlgh2nhh7f2t713.apps.googleusercontent.com',
-    client_secret='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',
+    client_id= CLIENT_ID,
+    client_secret=CLIENT_SECRET,
     authorize_url='https://accounts.google.com/o/oauth2/auth',
     authorize_params={'scope': 'email', 'access_type': 'offline'},
     access_token_url='https://accounts.google.com/o/oauth2/token',
@@ -30,7 +31,6 @@ google = oauth.register(
     userinfo_endpoint='https://www.googleapis.com/oauth2/v1/userinfo',
     client_kwargs={'scope': 'openid profile email'}
 )
-
 
 # Get DB_URI from environ variable (useful for production/testing) or,
 # if not set there, use development local db.
@@ -92,7 +92,6 @@ url_cache = {}
 def get_video_url(query, pid):
     """Getting trailer video via Youtube API"""
 
-    API_KEY = 'AIzaSyDSRLx0r_Dh85E8eGglh-5y0J-YUnsijks'
     youtube = build('youtube', 'v3', developerKey=API_KEY)
 
     # Make a request to search for videos
@@ -231,7 +230,6 @@ def register():
                 flash("An error occurred, please try again.", 'danger')
 
             return render_template('register.html', form=form)
-        
 
         # Setting session key value to demonstrate logged in user
         session[CURR_USER_KEY] = user.id
