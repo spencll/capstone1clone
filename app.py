@@ -10,8 +10,10 @@ from googleapiclient.discovery import build
 
 from forms import LoginForm, RegisterForm, CommentForm, RatingForm, EditUserForm
 from models import db, connect_db, Comment, Rating, User, Page
-from config import API_KEY, CLIENT_ID, CLIENT_SECRET
 
+API_KEY = os.environ.get('API_KEY')
+CLIENT_ID = os.environ.get('CLIENT_ID')
+CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
 
 # session key to store logged in user
 CURR_USER_KEY = "curr_user"
