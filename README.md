@@ -3,6 +3,7 @@
 ## Introduction
 
 Live render: https://studio-ghibli-fansite.onrender.com/
+\
 Welcome to the Studio Ghibli fansite where you can search movies from the studio to get more information and even watch a movie trailer! Upon logging in, you can leave a rating on movies as well as comment.
 
 * The home page displays the top rated movies as well as the latest comments. 
