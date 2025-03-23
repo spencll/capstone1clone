@@ -10,6 +10,7 @@ charset-normalizer==3.3.2
 click==8.1.7
 cryptography==42.0.3
 dnspython==2.6.1
+dotenv==0.9.9
 email-validator==2.1.0.post1
 Flask==3.0.2
 Flask-Bcrypt==1.0.1
@@ -39,6 +40,7 @@ pycparser==2.21
 pydantic==2.6.2
 pydantic_core==2.16.3
 pyparsing==3.1.1
+python-dotenv==1.0.1
 requests==2.31.0
 requests-oauthlib==1.1.0
 rsa==4.9
