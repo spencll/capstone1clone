@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 import os
 import requests
 import json
@@ -11,6 +12,7 @@ from googleapiclient.discovery import build
 from forms import LoginForm, RegisterForm, CommentForm, RatingForm, EditUserForm
 from models import db, connect_db, Comment, Rating, User, Page
 
+load_dotenv() 
 API_KEY = os.environ.get('API_KEY')
 CLIENT_ID = os.environ.get('CLIENT_ID')
 CLIENT_SECRET = os.environ.get('CLIENT_SECRET')
@@ -36,8 +38,7 @@ google = oauth.register(
 
 # Get DB_URI from environ variable (useful for production/testing) or,
 # if not set there, use development local db.
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.environ.get('DATABASE_URL', 'postgresql:///ghibli'))
+app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('DATABASE_URL', 'postgresql:///ghibli'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
@@ -47,6 +48,7 @@ toolbar = DebugToolbarExtension(app)
 connect_db(app)
 
 with app.app_context():
+    db.drop_all()
     db.create_all()
 
 
@@ -165,7 +167,7 @@ def home():
                         url=movie['url'])
             db.session.add(page)
             db.session.commit()
-
+    
     #Getting all movie names and convert to json to access in JS
     every = Page.query.all()
     names = json.dumps([page.name for page in every])
